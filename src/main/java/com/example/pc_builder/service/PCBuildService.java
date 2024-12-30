@@ -1,11 +1,14 @@
 package com.example.pc_builder.service;
 
+import com.example.pc_builder.dto.ComponentDTO;
+import com.example.pc_builder.dto.PCBuildDTO;
 import com.example.pc_builder.models.PCBuild;
 import com.example.pc_builder.repositories.PCBuildRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PCBuildService {
@@ -39,5 +42,25 @@ public class PCBuildService {
 
     public List<PCBuild> getPCBuildByPrice(Double price) {
         return pcBuildRepository.findByTotalPrice(price);
+    }
+
+    public List<PCBuildDTO> findBuildsByBudget(Double minBudget, Double maxBudget) {
+        List<PCBuild> builds = pcBuildRepository.findBuildsWithinBudget(minBudget, maxBudget);
+
+        return builds.stream().map(build -> {
+            List<ComponentDTO> components = build.getComponents().stream()
+                    .map(buildComponent -> new ComponentDTO(
+                            buildComponent.getComponent().getName(),
+                            buildComponent.getComponent().getCategory(),
+                            buildComponent.getComponent().getPrice(),
+                            buildComponent.getQuantity()
+                    )).collect(Collectors.toList());
+
+            return new PCBuildDTO(
+                    build.getBuildName(),
+                    build.getTotalPrice(),
+                    components
+            );
+        }).collect(Collectors.toList());
     }
 }

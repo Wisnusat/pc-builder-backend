@@ -1,6 +1,7 @@
 package com.example.pc_builder.controller;
 
 import com.example.pc_builder.dto.ErrorResponse;
+import com.example.pc_builder.dto.PCBuildDTO;
 import com.example.pc_builder.models.PCBuild;
 import com.example.pc_builder.models.PCBuildComponent;
 import com.example.pc_builder.service.PCBuildComponentService;
@@ -62,6 +63,14 @@ public class PCBuildController {
         }
 
         return ResponseEntity.ok(pcBuilds);
+    }
+
+    @GetMapping("/search-by-budget")
+    public List<PCBuildDTO> searchByBudget(
+            @RequestParam Double minBudget,
+            @RequestParam Double maxBudget
+    ) {
+        return pcBuildService.findBuildsByBudget(minBudget, maxBudget);
     }
 }
 

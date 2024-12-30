@@ -37,6 +37,10 @@ public class PCBuild {
         component.setPcBuild(null);
     }
 
+    public List<PCBuildComponent> getComponents() {
+        return components;
+    }
+
     public void setBuildId(Long buildId) {
         this.buildId = buildId;
     }
