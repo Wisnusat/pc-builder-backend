@@ -36,4 +36,8 @@ public class PCBuildService {
     public void deletePCBuild(Long id) {
         pcBuildRepository.deleteById(id);
     }
+
+    public List<PCBuild> getPCBuildByPrice(Double price) {
+        return pcBuildRepository.findByTotalPrice(price);
+    }
 }

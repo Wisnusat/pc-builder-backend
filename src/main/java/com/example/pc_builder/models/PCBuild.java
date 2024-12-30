@@ -3,6 +3,9 @@ package com.example.pc_builder.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +22,20 @@ public class PCBuild {
 
     @Column(nullable = false)
     private Double totalPrice;
+
+    @OneToMany(mappedBy = "pcBuild", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PCBuildComponent> components = new ArrayList<>();
+
+
+    public void addComponent(PCBuildComponent component) {
+        components.add(component);
+        component.setPcBuild(this);
+    }
+
+    public void removeComponent(PCBuildComponent component) {
+        components.remove(component);
+        component.setPcBuild(null);
+    }
 
     public void setBuildId(Long buildId) {
         this.buildId = buildId;
