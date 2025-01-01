@@ -57,6 +57,7 @@ public class PCBuildService {
                     )).collect(Collectors.toList());
 
             return new PCBuildDTO(
+                    build.getBuildId(),
                     build.getBuildName(),
                     build.getTotalPrice(),
                     components
